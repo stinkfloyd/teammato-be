@@ -1,0 +1,36 @@
+module.exports = {
+  "extends": [
+    'airbnb-base',
+  ],
+  rules: {
+    "semi": ["error", "never", { "beforeStatementContinuationChars": "never" }],
+    "no-implicit-globals": "off",
+    "strict": "off",
+    "quotes": "off",
+    "no-unused-vars": "off",
+    "no-else-return": "off",
+    "no-multiple-empty-lines": "off",
+    "indent": "off",
+    "max-len": "off",
+    "no-tabs": "off",
+    "no-plusplus": "off",
+    "nonblock-statement-body-position": "off",
+    "curly": "off",
+    "object-shorthand": "off",
+    "object-curly-newline": "off",
+    "no-mixed-spaces-and-tabs": "off",
+    "comma-dangle": "off",
+    "prefer-arrow-callback": "off",
+    "func-names": "off",
+    "no-use-before-define": "off",
+    "no-restricted-syntax": "off",
+    "no-undef": "off",
+    "guard-for-in": "off",
+    "no-bitwise": "off",
+    "eqeqeq": "off",
+    "no-shadow": "off",
+    "no-param-reassign": "off",
+    "eol-last": "off",
+    "class-methods-use-this": "off"
+  }
+};
