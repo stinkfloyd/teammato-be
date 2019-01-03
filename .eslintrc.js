@@ -31,6 +31,7 @@ module.exports = {
     "no-shadow": "off",
     "no-param-reassign": "off",
     "eol-last": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "newline-per-chained-call": "off",
   }
 };

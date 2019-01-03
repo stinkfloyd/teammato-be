@@ -1,5 +1,6 @@
 const knex = require('../knex')
 
+
 // Gets all users in the database ## DEV ONLY
 const getAll = () => knex('users')
   .then(users => users)
@@ -11,6 +12,7 @@ const create = body => knex('users')
   .returning('*')
   .then(user => user)
   .catch(err => Promise.reject(err))
+
 
 // Returns the user with the given ID
 const getOneUser = id => knex('users')

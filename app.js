@@ -22,4 +22,25 @@ app.use(function (req, res, next) {
 
 app.use('/users', usersRouter)
 
+/*
+ * Error Handling below
+ */
+app.use((err, req, res, next) => {
+  const status = err.status || 500
+  res.status(status).json({
+    error: {
+      status: err.status,
+      message: err.message
+    }
+  })
+})
+
+app.use((req, res, next) => {
+  res.status(404).json({
+    error: {
+      message: 'Not found'
+    }
+  })
+})
+
 module.exports = app
