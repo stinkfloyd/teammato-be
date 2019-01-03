@@ -3,14 +3,21 @@ const user = require('../models/user')
 
 const router = express.Router()
 
-/* GET users listing. */
+/*
+ * GET ALL USERS. Dev only.
+*/
 router.get('/', (req, res, next) => {
-  res.send('respond with a resource')
+  user.getAll()
+    .then((allUsers) => { res.send(allUsers) })
 })
-
+/*
+ * POST NEW USER. No validation
+*/
 router.post('/', (req, res, next) => {
+  console.log("req.body ", req.body)
   user.create(req.body)
-    .then(res => console.log("res:", res))
+    .then((createdUser) => { console.log(createdUser); res.send(createdUser) })
+    .catch(err => res.status(401).send(err))
 })
 
 module.exports = router
