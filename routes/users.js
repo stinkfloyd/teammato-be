@@ -47,8 +47,4 @@ router.post('/', validateBody, hashPassword, (req, res, next) => {
     .catch(err => res.status(401).send(err))
 })
 
-router.get('/:password', (req, res, next) => {
-
-})
-
 module.exports = router

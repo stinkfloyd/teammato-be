@@ -1,5 +1,6 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const user = require('../models/user')
 const validation = require('../models/validation')
 
@@ -36,8 +37,11 @@ const checkPassword = async (req, res, next) => {
   }
 }
 
+const createJwt = user => jwt.sign({ id: user.id }, process.env.JWT_TOKEN)
+
 router.post('/', checkUsername, checkPassword, (req, res, next) => {
-  res.send(req.user)
+  const token = createJwt(req.user)
+  res.set('Auth', `Bearer : ${token}`).status(200).json(req.user)
 })
 
 module.exports = router
