@@ -1,12 +1,24 @@
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
 const usersRouter = require('./routes/users')
+const loginRouter = require('./routes/login')
 
 const app = express()
 
+function requireHTTPS(req, res, next) {
+  // The 'x-forwarded-proto' check is for Heroku
+  if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
+    console.log("process.env: ", process.env.NODE_ENV)
+    return res.redirect(`https://${req.get('host')}${req.url}`)
+  }
+  return next()
+}
+
+app.use(requireHTTPS)
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -21,6 +33,7 @@ app.use(function (req, res, next) {
 })
 
 app.use('/users', usersRouter)
+app.use('/login', loginRouter)
 
 /*
  * Error Handling below

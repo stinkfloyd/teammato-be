@@ -14,17 +14,15 @@ const create = body => knex('users')
   .catch(err => Promise.reject(err))
 
 
-// Returns the user with the given ID
-const getOneUser = id => knex('users')
-  .where('id', id)
+// Returns the user with the given Username
+const getOneUser = username => knex('users')
+  .where('username', username).first()
   .then(user => user)
-  .catch((err) => {
-    Promise.reject(err)
-  })
+  .catch(err => Promise.reject(err))
 
-// Deletes a user with the given ID
-const deleteOne = id => knex('users')
-  .where('id', id)
+// Deletes a user with the given username
+const deleteOne = username => knex('users')
+  .where('username', username)
   .del()
   .returning('*')
   .then(user => user)

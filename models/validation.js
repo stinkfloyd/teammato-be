@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const bcrypt = require('bcrypt')
 
 const schema = Joi.object().keys({
   username: Joi.string().alphanum().min(3).max(30).required(),
@@ -18,6 +19,10 @@ const validate = (newUser) => {
   }
 }
 
+const checkPassword = (password, storedPassword) => bcrypt.compare(password, storedPassword)
+  .then(response => response)
+
 module.exports = {
   validate,
+  checkPassword,
 }

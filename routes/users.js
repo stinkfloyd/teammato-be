@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
 const user = require('../models/user')
 const validation = require('../models/validation')
 
@@ -19,6 +20,16 @@ const validateBody = (req, res, next) => {
   }
 }
 
+const hashPassword = (req, res, next) => {
+  bcrypt.hash(req.body.password, 10)
+    .then((hash) => {
+      // Store hash in req
+      req.body.password = hash
+      next()
+    })
+    .catch(err => next(err))
+}
+
 
 /*
  *  GET ALL USERS. Dev only.
@@ -28,12 +39,16 @@ router.get('/', (req, res, next) => {
     .then((allUsers) => { res.send(allUsers) })
 })
 /*
- *  POST NEW USER. No validation
+ *  POST NEW USER.
  */
-router.post('/', validateBody, (req, res, next) => {
+router.post('/', validateBody, hashPassword, (req, res, next) => {
   user.create(req.body)
     .then((createdUser) => { res.send(createdUser) })
     .catch(err => res.status(401).send(err))
+})
+
+router.get('/:password', (req, res, next) => {
+
 })
 
 module.exports = router
