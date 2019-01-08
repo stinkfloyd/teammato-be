@@ -8,6 +8,7 @@ const logger = require('morgan')
 const usersRouter = require('./routes/users')
 const loginRouter = require('./routes/login')
 const profileRouter = require('./routes/profile')
+const teamsRouter = require('./routes/teams')
 
 const app = express()
 
@@ -39,6 +40,7 @@ app.use(function (req, res, next) {
 app.use('/users', usersRouter)
 app.use('/login', loginRouter)
 app.use('/profile', profileRouter)
+app.use('/teams', teamsRouter)
 
 /*
  * Error Handling below
