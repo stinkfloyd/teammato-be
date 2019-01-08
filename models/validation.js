@@ -2,7 +2,7 @@ const Joi = require('joi')
 const bcrypt = require('bcrypt')
 
 const schema = Joi.object().keys({
-  username: Joi.string().alphanum().min(8).max(15).required(),
+  username: Joi.string().alphanum().min(8).max(15).regex(/^[a-zA-Z0-9-_]{8,15}$/).required(),
   password: Joi.string().regex(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/).required(),
   firstName: Joi.string().min(2).max(30).required(),
   lastName: Joi.string().min(2).max(30).required(),
