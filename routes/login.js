@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -37,11 +38,16 @@ const checkPassword = async (req, res, next) => {
   }
 }
 
-const createJwt = user => jwt.sign({ id: user.id }, process.env.JWT_TOKEN)
+const createJwt = async payload => jwt.sign(payload, process.env.JWT_TOKEN)
 
-router.post('/', checkUsername, checkPassword, (req, res, next) => {
-  const token = createJwt(req.user)
-  res.set('Auth', `Bearer : ${token}`).status(200).json(req.user)
+router.post('/', checkUsername, checkPassword, async (req, res, next) => {
+  const payload = {
+    username: req.user.username,
+    id: req.user.id
+  }
+  const token = await createJwt(payload)
+  console.log("res.json(token): ", token)
+  res.json({ token: token })
 })
 
 module.exports = router

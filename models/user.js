@@ -17,6 +17,7 @@ const create = body => knex('users')
 // Returns the user with the given Username
 const getOneUser = username => knex('users')
   .where('username', username).first()
+  .returning('*')
   .then(user => user)
   .catch(err => Promise.reject(err))
 
