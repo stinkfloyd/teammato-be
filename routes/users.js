@@ -42,7 +42,15 @@ router.get('/', (req, res, next) => {
  *  POST NEW USER.
  */
 router.post('/', validateBody, hashPassword, (req, res, next) => {
-  user.create(req.body)
+  const newUser = {
+    firstName: req.body.firstName.toLowerCase(),
+    lastName: req.body.lastName.toLowerCase(),
+    username: req.body.username.toLowerCase(),
+    email: req.body.email.toLowerCase(),
+    password: req.body.password
+  }
+  console.log("newUser: ", newUser)
+  user.create(newUser)
     .then((createdUser) => { res.send(createdUser) })
     .catch(err => res.status(401).send(err))
 })

@@ -4,8 +4,10 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
+
 const usersRouter = require('./routes/users')
 const loginRouter = require('./routes/login')
+const profileRouter = require('./routes/profile')
 
 const app = express()
 
@@ -36,6 +38,7 @@ app.use(function (req, res, next) {
 
 app.use('/users', usersRouter)
 app.use('/login', loginRouter)
+app.use('/profile', profileRouter)
 
 /*
  * Error Handling below

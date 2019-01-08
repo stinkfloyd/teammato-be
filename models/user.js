@@ -9,7 +9,7 @@ const getAll = () => knex('users')
 // Creates a user from the given object
 const create = body => knex('users')
   .insert(body)
-  .returning('*')
+  .returning(['username', 'firstName', 'lastName', 'email'])
   .then(user => user)
   .catch(err => Promise.reject(err))
 
@@ -17,7 +17,6 @@ const create = body => knex('users')
 // Returns the user with the given Username
 const getOneUser = username => knex('users')
   .where('username', username).first()
-  .returning('*')
   .then(user => user)
   .catch(err => Promise.reject(err))
 

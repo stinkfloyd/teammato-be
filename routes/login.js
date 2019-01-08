@@ -12,8 +12,8 @@ const router = express.Router()
  */
 
 const checkUsername = (req, res, next) => {
-  user.getOneUser(req.body.username)
-    .then(async (result) => {
+  user.getOneUser(req.body.username.toLowerCase())
+    .then((result) => {
       if (!result) {
         const err = new Error()
         err.status = 401
@@ -46,7 +46,6 @@ router.post('/', checkUsername, checkPassword, async (req, res, next) => {
     id: req.user.id
   }
   const token = await createJwt(payload)
-  console.log("res.json(token): ", token)
   res.json({ token: token })
 })
 
