@@ -5,6 +5,16 @@ const getAll = () => knex('teams')
   .then(teams => teams)
   .catch(err => Promise.reject(err))
 
+const getCreated = id => knex('teams')
+  .where('creator', id)
+  .then(teams => teams)
+  .catch(err => Promise.reject(err))
+
+const getJoined = id => knex('teams_users')
+  .where('user_id', id)
+  .then(teams => teams)
+  .catch(err => Promise.reject(err))
+
 // Creates a team from the given object
 const create = body => knex('teams')
   .insert(body)
@@ -19,6 +29,12 @@ const getOneTeam = (id, next) => knex('teams')
   .catch((err) => {
     next(err)
   })
+
+const getTeamNamesById = id => knex('teams')
+  .select('name')
+  .whereIn('id', id)
+  .then(team => team)
+  .catch(err => err)
 
 // Returns the team with the given Name
 const getOneTeamByName = (name, next) => knex('teams')
@@ -47,10 +63,24 @@ const deleteOne = (id, next) => knex('teams')
 // Returns the team with the given name
 const checkName = name => knex('teams')
   .where('name', name).first()
-  .then(user => user)
+  .then(team => team)
   .catch((err) => {
     Promise.reject(err)
   })
+
+// Adds a user to a team.
+const addUserToTeam = body => knex('teams_users')
+  .insert(body)
+  .returning('*')
+  .then(response => response)
+  .catch(err => Promise.reject(err))
+
+// Deletes a user from a team
+const checkUser = (teamId, userId) => knex('teams_users')
+  .where('team_id', teamId)
+  .andWhere('user_id', userId)
+  .then(response => response)
+  .catch(err => Promise.reject(err))
 
 module.exports = {
   getAll,
@@ -59,5 +89,10 @@ module.exports = {
   getOneTeamByName,
   deleteOne,
   editName,
-  checkName
+  checkName,
+  addUserToTeam,
+  getCreated,
+  getJoined,
+  checkUser,
+  getTeamNamesById
 }

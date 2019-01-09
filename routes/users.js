@@ -49,10 +49,11 @@ router.post('/', validateBody, hashPassword, (req, res, next) => {
     email: req.body.email.toLowerCase(),
     password: req.body.password
   }
-  console.log("newUser: ", newUser)
   user.create(newUser)
     .then((createdUser) => { res.send(createdUser) })
     .catch(err => res.status(401).send(err))
 })
+
+
 
 module.exports = router

@@ -24,12 +24,90 @@ const jwtVerify = (req, res, next) => {
     }
   })
 }
-
+// Creates a team
 router.post('/', jwtVerify, (req, res, next) => {
-  const newTeam = { ...req.body, creator: req.payload.id }
+  const newTeam = {
+    name: req.body.name.toLowerCase(),
+    creator: req.payload.id
+  }
   teams.create(newTeam).then((response) => {
-    res.send(response)
+    if (!response) {
+      return next(response)
+    } else {
+      req.team = response
+      return addOwnerToTeam(req, res, next)
+    }
   })
+    .catch(err => res.status(401).send(err))
 })
+
+// ADDS A USER TO A TEAM
+router.post('/join', jwtVerify, (req, res, next) => {
+  teams.getOneTeamByName(req.body.name, next)
+    .then((response) => {
+      if (!response) {
+        const err = new Error()
+        err.status = 404
+        err.message = `Team does not exist`
+        return next(err)
+      } else {
+        req.team = response
+        return teams.checkUser(response.id, req.payload.id)
+          .then((response) => {
+            if (response.length > 0) {
+              const err = new Error()
+              err.status = 401
+              err.message = `Already on team`
+              return next(err)
+            } else {
+              const newTeamMember = {
+                team_id: req.team.id,
+                user_id: req.payload.id,
+                team_creator: false
+              }
+              return teams.addUserToTeam(newTeamMember)
+                .then(response => res.send(response))
+                .catch(error => next(error))
+            }
+          })
+      }
+    })
+    .catch((err) => { next(err) })
+})
+// gets all teams created by user
+router.get('/created', jwtVerify, (req, res, next) => {
+  teams.getCreated(req.payload.id)
+    .then(teams => res.send(teams))
+    .catch(err => res.status(401).send(err))
+})
+// gets all teams joined but not created by user
+router.get('/joined', jwtVerify, (req, res, next) => {
+  const teamNames = []
+  const joinedTeams = []
+  teams.getJoined(req.payload.id)
+    .then((teamList) => {
+      teamList.forEach((team) => {
+        if (!team.team_creator) {
+          joinedTeams.push(team.team_id)
+        }
+      })
+      console.log("joined: ", joinedTeams)
+      return teams.getTeamNamesById(joinedTeams)
+        .then(result => res.send(result))
+        .catch(err => console.log("error!"))
+    })
+    .catch(err => res.status(401).send(err))
+})
+
+const addOwnerToTeam = async (req, res, next) => {
+  const creator = {
+    team_id: req.team.id,
+    user_id: req.team.creator,
+    team_creator: true
+  }
+  teams.addUserToTeam(creator)
+    .then(response => res.send(response))
+}
+
 
 module.exports = router
