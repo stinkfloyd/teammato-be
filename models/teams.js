@@ -31,7 +31,7 @@ const getOneTeam = (id, next) => knex('teams')
   })
 
 const getTeamNamesById = id => knex('teams')
-  .select('name')
+  .select('name', 'id')
   .whereIn('id', id)
   .then(team => team)
   .catch(err => err)

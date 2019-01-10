@@ -41,6 +41,21 @@ router.post('/', jwtVerify, (req, res, next) => {
     .catch(err => res.status(401).send(err))
 })
 
+router.get('/team/:id', (req, res, next) => {
+  const id = parseInt(req.params.id, 10)
+  teams.getOneTeam(id, next).then((team) => {
+    if (!team) {
+      const err = new Error()
+      err.status = 404
+      err.message = "Team ID does not exist"
+      res.status(401).send(err)
+    } else {
+      res.send(team)
+    }
+  })
+    .catch(err => res.status(401).send(err))
+})
+
 // ADDS A USER TO A TEAM
 router.post('/join', jwtVerify, (req, res, next) => {
   teams.getOneTeamByName(req.body.name, next)
@@ -91,10 +106,9 @@ router.get('/joined', jwtVerify, (req, res, next) => {
           joinedTeams.push(team.team_id)
         }
       })
-      console.log("joined: ", joinedTeams)
       return teams.getTeamNamesById(joinedTeams)
         .then(result => res.send(result))
-        .catch(err => console.log("error!"))
+        .catch(err => res.status(401).send(err))
     })
     .catch(err => res.status(401).send(err))
 })
