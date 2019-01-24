@@ -10,12 +10,14 @@ io.on("connection", (socket) => {
   console.log("user connected {id}:", socket.id)
 
   socket.on("Team", (team) => {
-    socket.leave()
+    socket.leave(socket.teamName, () => {
+      console.log("socket.rooms in leave(): ", socket.rooms)
+    })
     console.log("team.name: ", team.name)
     console.log("socket.id: ", socket.id)
     console.log("socket.rooms (before): ", socket.rooms)
-    teamName = team.name
-    socket.join(team.name, () => {
+    socket.teamName = team.name
+    socket.join(socket.teamName, () => {
       console.log("socket.rooms (after): ", socket.rooms)
     })
   })
@@ -25,9 +27,9 @@ io.on("connection", (socket) => {
   })
 
   socket.on('new-message', (message) => {
-    console.log("teamName (should work) ", Object.keys(socket.rooms)[1])
+    console.log("teamName (should work) ", socket.teamName)
     console.log("message ", message)
-    io.to(Object.keys(socket.rooms)[0]).emit('new-message', message)
+    io.emit('new-message', message)
   })
 
   socket.on('disconnect', function () {
