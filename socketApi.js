@@ -2,35 +2,29 @@ const socket_io = require('socket.io')
 
 const io = socket_io()
 const socketApi = {}
+teamName = ''
 
 socketApi.io = io
 
 io.on("connection", (socket) => {
   console.log("user connected")
-  let previousId
-  const safeJoin = (currentId) => {
-    socket.leave(previousId)
-    socket.join(currentId)
-    previousId = currentId
-  }
+
+  socket.on("Team", (team) => {
+    socket.leaveAll()
+    console.log("team.name", team.name)
+    teamName = team.name
+    socket.join(team.name, () => {
+    })
+  })
 
   socket.on("test", () => {
     console.log("test")
   })
 
-  socket.on("test2", () => {
-    console.log("test2")
+  socket.on('new-message', (message) => {
+    console.log("teamName ", teamName)
+    io.to(teamName).emit('new-message', message)
   })
-
-  socket.on("test3", () => {
-    console.log("test3")
-  })
-
-  // io.emit("documents", Object.keys(documents))
 })
-
-socketApi.sendNotification = function () {
-  io.sockets.emit('hello', { msg: 'Hello World!' })
-}
 
 module.exports = socketApi
