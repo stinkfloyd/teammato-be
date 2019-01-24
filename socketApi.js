@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
   socket.on('new-message', (message) => {
     console.log("teamName (should work) ", socket.teamName)
     console.log("message ", message)
-    io.emit('new-message', message)
+    io.to(`${socket.teamName}`).emit('new-message', message)
   })
 
   socket.on('disconnect', function () {
