@@ -25,9 +25,9 @@ io.on("connection", (socket) => {
   })
 
   socket.on('new-message', (message) => {
-    console.log("teamName ", teamName)
+    console.log("teamName (should work) ", Object.keys(socket.rooms)[0])
     console.log("message ", message)
-    io.to(teamName).emit('new-message', message)
+    io.to(Object.keys(socket.rooms)[0]).emit('new-message', message)
   })
 })
 
