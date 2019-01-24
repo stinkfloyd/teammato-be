@@ -7,7 +7,7 @@ teamName = ''
 socketApi.io = io
 
 io.on("connection", (socket) => {
-  console.log("user connected")
+  console.log("user connected {id}:", socket.id)
 
   socket.on("Team", (team) => {
     socket.leaveAll()
