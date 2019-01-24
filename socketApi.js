@@ -11,9 +11,12 @@ io.on("connection", (socket) => {
 
   socket.on("Team", (team) => {
     socket.leaveAll()
-    console.log("team.name", team.name)
+    console.log("team.name: ", team.name)
+    console.log("socket.id: ", socket.id)
+    console.log("socket.rooms (before): ", socket.rooms)
     teamName = team.name
     socket.join(team.name, () => {
+      console.log("socket.rooms (after): ", socket.rooms)
     })
   })
 
@@ -23,6 +26,7 @@ io.on("connection", (socket) => {
 
   socket.on('new-message', (message) => {
     console.log("teamName ", teamName)
+    console.log("message ", message)
     io.to(teamName).emit('new-message', message)
   })
 })
