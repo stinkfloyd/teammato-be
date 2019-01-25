@@ -41,7 +41,7 @@ router.post('/', jwtVerify, (req, res, next) => {
     .catch(err => res.status(401).send(err))
 })
 
-router.get('/team/:id', (req, res, next) => {
+router.get('/team/:id', jwtVerify, (req, res, next) => {
   const id = parseInt(req.params.id, 10)
   teams.getOneTeam(id, next).then((team) => {
     if (!team) {
@@ -50,6 +50,7 @@ router.get('/team/:id', (req, res, next) => {
       err.message = "Team ID does not exist"
       res.status(401).send(err)
     } else {
+      team.username = req.payload.username
       res.send(team)
     }
   })

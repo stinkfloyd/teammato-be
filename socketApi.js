@@ -1,6 +1,6 @@
-const socket_io = require('socket.io')
+const socketIO = require('socket.io')
 
-const io = socket_io()
+const io = socketIO()
 const socketApi = {}
 teamName = ''
 

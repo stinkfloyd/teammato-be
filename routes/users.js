@@ -38,6 +38,8 @@ router.get('/', (req, res, next) => {
   user.getAll()
     .then((allUsers) => { res.send(allUsers) })
 })
+
+
 /*
  *  POST NEW USER.
  */
