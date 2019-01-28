@@ -33,6 +33,18 @@ io.on("connection", (socket) => {
     io.to(`${socket.teamName}`).emit('new-message', message)
   })
 
+  socket.on('new-goal', (goal) => {
+    console.log("goal:", goal)
+    console.log("socket.teamName: ", socket.teamName)
+    const goalEmit = {
+      user: '**System**',
+      message: 'A new Goal has been added',
+      timestamp: new Date(Date.now())
+    }
+    io.to(`${socket.teamName}`).emit('new-message', goalEmit)
+    io.to(`${socket.teamName}`).emit('new-goal', goal)
+  })
+
   socket.on('disconnect', function () {
     console.log('socket.id disconnected:', socket.id)
   })

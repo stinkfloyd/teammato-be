@@ -10,6 +10,7 @@ const usersRouter = require('./routes/users')
 const loginRouter = require('./routes/login')
 const profileRouter = require('./routes/profile')
 const teamsRouter = require('./routes/teams')
+const goalRouter = require('./routes/goal')
 
 const app = express()
 const server = require('http').Server(app)
@@ -42,6 +43,7 @@ app.use('/users', usersRouter)
 app.use('/login', loginRouter)
 app.use('/profile', profileRouter)
 app.use('/teams', teamsRouter)
+app.use('/goal', goalRouter)
 
 /*
  * Error Handling below

@@ -6,8 +6,7 @@ exports.up = function (knex, Promise) {
     table.foreign(`team_id`).references(`teams.id`).onDelete(`CASCADE`)
     table.string('title').notNullable()
     table.string('desc').notNullable()
-    table.integer('creator').notNullable()
-    table.foreign(`creator`).references(`users.id`).onDelete(`CASCADE`)
+    table.string('creator').notNullable()
     table.timestamps(true, true)
     // OR
     // table.dateTime('created_at').notNullable().defaultTo(knex.raw('now()'))
