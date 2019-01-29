@@ -51,11 +51,19 @@ const unCompleteGoal = (id, username, next) => {
     .catch(err => next(err))
 }
 
+const deleteGoal = id => knex('goals')
+  .where('id', id)
+  .del()
+  .returning('*')
+  .then(goal => goal[0])
+  .catch(err => Promise.reject(err))
+
 
 module.exports = {
   create,
   getGoalsForTeam,
   acceptGoal,
   completeGoal,
-  unCompleteGoal
+  unCompleteGoal,
+  deleteGoal
 }

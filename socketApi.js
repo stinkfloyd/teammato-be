@@ -71,6 +71,10 @@ io.on("connection", (socket) => {
     io.to(`${socket.teamName}`).emit('goal-uncompleted', goal)
   })
 
+  socket.on('goal-deleted', (goal) => {
+    io.to(`${socket.teamName}`).emit('goal-deleted', goal)
+  })
+
   socket.on('disconnect', function () {
     console.log('socket.id disconnected:', socket.id)
   })

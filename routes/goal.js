@@ -81,4 +81,10 @@ router.put('/:id/uncomplete', jwtVerify, (req, res, next) => {
     res.send(goal)
   })
 })
+
+router.delete('/:id', jwtVerify, (req, res, next) => {
+  const id = parseInt(req.params.id, 10)
+  goals.deleteGoal(id)
+    .then(result => res.send(result))
+})
 module.exports = router
