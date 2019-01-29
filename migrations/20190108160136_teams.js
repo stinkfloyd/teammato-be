@@ -5,6 +5,7 @@ exports.up = function (knex, Promise) {
     table.string('name', 255).notNullable().unique().defaultTo('')
     table.integer('creator').notNullable()
     table.foreign(`creator`).references(`users.id`).onDelete(`CASCADE`)
+    table.string('creator_username')
     table.timestamps(true, true)
   })
 }

@@ -26,14 +26,18 @@ const jwtVerify = (req, res, next) => {
 }
 // Creates a team
 router.post('/', jwtVerify, (req, res, next) => {
+  console.log("req.payload: ", req.payload)
   const newTeam = {
     name: req.body.name.toLowerCase(),
-    creator: req.payload.id
+    creator: req.payload.id,
+    creator_username: req.payload.username.toLowerCase()
   }
+  console.log("newTeam:", newTeam)
   teams.create(newTeam).then((response) => {
     if (!response) {
       return next(response)
     } else {
+      console.log("yo")
       req.team = response
       return addOwnerToTeam(req, res, next)
     }

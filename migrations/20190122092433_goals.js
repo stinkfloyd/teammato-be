@@ -7,6 +7,10 @@ exports.up = function (knex, Promise) {
     table.string('title').notNullable()
     table.string('desc').notNullable()
     table.string('creator').notNullable()
+    table.boolean('accepted').defaultTo(false)
+    table.string('acceptedBy').defaultTo('')
+    table.boolean('completed').defaultTo(false)
+    table.string('completedBy').defaultTo('')
     table.timestamps(true, true)
     // OR
     // table.dateTime('created_at').notNullable().defaultTo(knex.raw('now()'))

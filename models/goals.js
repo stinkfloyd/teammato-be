@@ -8,11 +8,54 @@ const create = body => knex('goals')
   .catch(err => Promise.reject(err))
 
 const getGoalsForTeam = (id, next) => knex('goals')
-    .where('team_id', id)
-    .then(goals => goals)
-    .catch(err => err)
+  .where('team_id', id)
+  .then(goals => goals)
+  .catch(err => next(err))
+
+const acceptGoal = (id, username, next) => {
+  console.log("here")
+  return knex('goals')
+    .where('id', id)
+    .update({ accepted: true, acceptedBy: username })
+    .returning('*')
+    .then((goal) => {
+      console.log("goal in acceptGoal (model): ", goal[0])
+      return goal[0]
+    })
+    .catch(err => next(err))
+}
+
+const completeGoal = (id, username, next) => {
+  console.log("here")
+  return knex('goals')
+    .where('id', id)
+    .update({ completed: true, completedBy: username })
+    .returning('*')
+    .then((goal) => {
+      console.log("goal in completeGoal (model): ", goal[0])
+      return goal[0]
+    })
+    .catch(err => next(err))
+}
+
+const unCompleteGoal = (id, username, next) => {
+  console.log("here")
+  return knex('goals')
+    .where('id', id)
+    .update({ completed: false, completedBy: '', accepted: false, acceptedBy: '' })
+    .returning('*')
+    .then((goal) => {
+      console.log("goal in completeGoal (model): ", goal[0])
+      return goal[0]
+    })
+    .catch(err => next(err))
+}
+
 
 module.exports = {
   create,
-  getGoalsForTeam
+  getGoalsForTeam,
+  acceptGoal,
+  completeGoal,
+  unCompleteGoal
 }

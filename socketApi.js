@@ -38,11 +38,37 @@ io.on("connection", (socket) => {
     console.log("socket.teamName: ", socket.teamName)
     const goalEmit = {
       user: '**System**',
-      message: 'A new Goal has been added',
+      message: `${goal.creator} has added a new goal - ${goal.title}`,
       timestamp: new Date(Date.now())
     }
     io.to(`${socket.teamName}`).emit('new-message', goalEmit)
     io.to(`${socket.teamName}`).emit('new-goal', goal)
+  })
+
+  socket.on('goal-accepted', (goal) => {
+    console.log("goal-accepted:", goal)
+    const acceptEmit = {
+      user: '**System**',
+      message: `${goal.acceptedBy} has accepted a new goal - ${goal.title}`,
+      timestamp: new Date(Date.now())
+    }
+    io.to(`${socket.teamName}`).emit('new-message', acceptEmit)
+    io.to(`${socket.teamName}`).emit('goal-accepted', goal)
+  })
+
+  socket.on('goal-completed', (goal) => {
+    console.log("goal-completed:", goal)
+    const completedEmit = {
+      user: '**System**',
+      message: `${goal.completedBy} has completed a goal - ${goal.title}`,
+      timestamp: new Date(Date.now())
+    }
+    io.to(`${socket.teamName}`).emit('new-message', completedEmit)
+    io.to(`${socket.teamName}`).emit('goal-completed', goal)
+  })
+
+  socket.on('goal-uncompleted', (goal) => {
+    io.to(`${socket.teamName}`).emit('goal-uncompleted', goal)
   })
 
   socket.on('disconnect', function () {
