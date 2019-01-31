@@ -19,6 +19,12 @@ io.on("connection", (socket) => {
     socket.teamName = team.name
     socket.join(socket.teamName, () => {
       console.log("socket.rooms (after): ", socket.rooms)
+      const logInEmit = {
+        user: '**System**',
+        message: `${team.username} has logged in`,
+        timestamp: new Date(Date.now())
+      }
+      io.in(`${socket.teamName}`).emit('new-message', logInEmit)
     })
   })
 
@@ -77,6 +83,12 @@ io.on("connection", (socket) => {
 
   socket.on('disconnect', function () {
     console.log('socket.id disconnected:', socket.id)
+    const logOutEmit = {
+      user: '**System**',
+      message: `${team.username} has logged out`,
+      timestamp: new Date(Date.now())
+    }
+    io.in(`${socket.teamName}`).emit('new-message', logOutEmit)
   })
 })
 
