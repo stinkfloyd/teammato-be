@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
     console.log("teamName (should work) ", socket.teamName)
     console.log("message ", message)
     console.log("typeOf: ", typeof socket.teamName)
-    io.to(`${socket.teamName}`).emit('new-message', message)
+    io.in(`${socket.teamName}`).emit('new-message', message)
   })
 
   socket.on('new-goal', (goal) => {
@@ -41,8 +41,8 @@ io.on("connection", (socket) => {
       message: `${goal.creator} has added a new goal - ${goal.title}`,
       timestamp: new Date(Date.now())
     }
-    io.to(`${socket.teamName}`).emit('new-message', goalEmit)
-    io.to(`${socket.teamName}`).emit('new-goal', goal)
+    io.in(`${socket.teamName}`).emit('new-message', goalEmit)
+    io.in(`${socket.teamName}`).emit('new-goal', goal)
   })
 
   socket.on('goal-accepted', (goal) => {
@@ -52,8 +52,8 @@ io.on("connection", (socket) => {
       message: `${goal.acceptedBy} has accepted a new goal - ${goal.title}`,
       timestamp: new Date(Date.now())
     }
-    io.to(`${socket.teamName}`).emit('new-message', acceptEmit)
-    io.to(`${socket.teamName}`).emit('goal-accepted', goal)
+    io.in(`${socket.teamName}`).emit('new-message', acceptEmit)
+    io.in(`${socket.teamName}`).emit('goal-accepted', goal)
   })
 
   socket.on('goal-completed', (goal) => {
@@ -63,16 +63,16 @@ io.on("connection", (socket) => {
       message: `${goal.completedBy} has completed a goal - ${goal.title}`,
       timestamp: new Date(Date.now())
     }
-    io.to(`${socket.teamName}`).emit('new-message', completedEmit)
-    io.to(`${socket.teamName}`).emit('goal-completed', goal)
+    io.in(`${socket.teamName}`).emit('new-message', completedEmit)
+    io.in(`${socket.teamName}`).emit('goal-completed', goal)
   })
 
   socket.on('goal-uncompleted', (goal) => {
-    io.to(`${socket.teamName}`).emit('goal-uncompleted', goal)
+    io.in(`${socket.teamName}`).emit('goal-uncompleted', goal)
   })
 
   socket.on('goal-deleted', (goal) => {
-    io.to(`${socket.teamName}`).emit('goal-deleted', goal)
+    io.in(`${socket.teamName}`).emit('goal-deleted', goal)
   })
 
   socket.on('disconnect', function () {
