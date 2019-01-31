@@ -10,6 +10,14 @@ io.on("connection", (socket) => {
   console.log("user connected {id}:", socket.id)
 
   socket.on("Team", (team) => {
+    if (socket.teamName) {
+      const logOutEmit = {
+        user: '**System**',
+        message: `${socket.username} has logged out`,
+        timestamp: new Date(Date.now())
+      }
+      io.in(`${socket.teamName}`).emit('new-message', logOutEmit)
+    }
     socket.leave(socket.teamName, () => {
       console.log("socket.rooms in leave(): ", socket.rooms)
     })
@@ -84,12 +92,6 @@ io.on("connection", (socket) => {
 
   socket.on('disconnect', function () {
     console.log('socket.id disconnected:', socket.id)
-    const logOutEmit = {
-      user: '**System**',
-      message: `${socket.username} has logged out`,
-      timestamp: new Date(Date.now())
-    }
-    io.in(`${socket.teamName}`).emit('new-message', logOutEmit)
   })
 })
 
