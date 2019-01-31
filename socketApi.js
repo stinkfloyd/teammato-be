@@ -17,7 +17,7 @@ io.on("connection", (socket) => {
         timestamp: new Date(Date.now())
       }
       socket.leave(socket.teamName, () => {
-        io.in(`${socket.teamName}`).emit('new-message', logOutEmit)
+        io.to(`${socket.teamName}`).emit('new-message', logOutEmit)
       })
     }
     console.log("team.name: ", team.name)
