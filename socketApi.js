@@ -16,11 +16,10 @@ io.on("connection", (socket) => {
         message: `${socket.username} has logged out`,
         timestamp: new Date(Date.now())
       }
-      io.in(`${socket.teamName}`).emit('new-message', logOutEmit)
+      socket.leave(socket.teamName, () => {
+        io.in(`${socket.teamName}`).emit('new-message', logOutEmit)
+      })
     }
-    socket.leave(socket.teamName, () => {
-      console.log("socket.rooms in leave(): ", socket.rooms)
-    })
     console.log("team.name: ", team.name)
     console.log("socket.id: ", socket.id)
     console.log("socket.rooms (before): ", socket.rooms)
