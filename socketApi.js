@@ -10,16 +10,9 @@ io.on("connection", (socket) => {
   console.log("user connected {id}:", socket.id)
 
   socket.on("Team", (team) => {
-    if (socket.teamName) {
-      const logOutEmit = {
-        user: '**System**',
-        message: `${socket.username} has logged out`,
-        timestamp: new Date(Date.now())
-      }
-      socket.leave(socket.teamName, () => {
-        io.to(`${socket.teamName}`).emit('new-message', logOutEmit)
-      })
-    }
+    socket.leave(socket.teamName, () => {
+      console.log("socket.rooms in leave(): ", socket.rooms)
+    })
     console.log("team.name: ", team.name)
     console.log("socket.id: ", socket.id)
     console.log("socket.rooms (before): ", socket.rooms)
@@ -82,10 +75,22 @@ io.on("connection", (socket) => {
   })
 
   socket.on('goal-uncompleted', (goal) => {
+    const unCompletedEmit = {
+      user: '**System**',
+      message: `${socket.username} has undone a goal to the backlog - ${goal.title}`,
+      timestamp: new Date(Date.now())
+    }
+    io.in(`${socket.teamName}`).emit('new-message', unCompletedEmit)
     io.in(`${socket.teamName}`).emit('goal-uncompleted', goal)
   })
 
   socket.on('goal-deleted', (goal) => {
+    const deletedEmit = {
+      user: '**System**',
+      message: `${socket.username} has removed a goal  - ${goal.title}`,
+      timestamp: new Date(Date.now())
+    }
+    io.in(`${socket.teamName}`).emit('new-message', deletedEmit)
     io.in(`${socket.teamName}`).emit('goal-deleted', goal)
   })
 
