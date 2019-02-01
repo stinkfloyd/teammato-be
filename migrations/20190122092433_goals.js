@@ -11,6 +11,7 @@ exports.up = function (knex, Promise) {
     table.string('acceptedBy').defaultTo('')
     table.boolean('completed').defaultTo(false)
     table.string('completedBy').defaultTo('')
+    table.integer('rate').notNullable().defaultTo(3)
     table.timestamps(true, true)
     // OR
     // table.dateTime('created_at').notNullable().defaultTo(knex.raw('now()'))
